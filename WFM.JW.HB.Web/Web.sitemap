@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="~/Default.aspx" title="主页"  description="主页">
+
+    <siteMapNode url="Javascript:void(2)" title="报表统计"  description="报表统计" >
+      <siteMapNode url="~/WFMClues/ClueReportRegion.aspx" title="按地区统计"  description="按地区统计" >
+       <siteMapNode url="~/WFMClues/ClueSummaryRegion.aspx" title="按乡镇统计" description="按地区统计" />
+      </siteMapNode>
+      <siteMapNode url="~/WFMClues/ClueReportItem.aspx" title="按项目统计"  description="按项目统计" />
+    </siteMapNode>
+    
+    
+    <siteMapNode url="~/CMSBaseType/BaseTypeQuery.aspx" title="基础数据"  description="基础数据" >
+      <siteMapNode url="~/CMSBaseType/BaseTypeEdit.aspx" title="基础数据修改"  description="基础修改" />
+      <siteMapNode url="~/CMSBaseType/BaseTypeItemQuery.aspx" title="数据项管理"  description="数据项管理" >
+        <siteMapNode url="~/CMSBaseType/BaseTypeItemEdit.aspx" title="数据项修改"  description="数据项修改" />
+      </siteMapNode>
+    </siteMapNode> 
+
+    
+
+      <siteMapNode url="~/WFMClues/ClueMgr.aspx" title="线索管理"  description="线索管理" >
+        <siteMapNode url="~/WFMClues/CluesEdit.aspx" title="线索详细信息"  description="线索详细信息" />
+      </siteMapNode>
+    
+
+    <siteMapNode url="~/WFMTask/TaskMgr.aspx" title="上传数据管理"  description="上传数据管理" >
+      <siteMapNode url="~/WFMTask/TaskEdit.aspx" title="数据修改"  description="数据修改" />
+    </siteMapNode>
+
+    <siteMapNode url="Javascript:void(0)" title="系统管理"  description="系统管理" >
+      <siteMapNode url="~/WFMUser/UserMgr.aspx" title="用户管理"  description="新增、查询、修改、删除用户" >
+        <siteMapNode url="~/WFMUser/UserEdit.aspx" title="编辑用户"  description="编辑用户" />
+      </siteMapNode>
+      <siteMapNode url="~/WFMLogin/ChangePassword.aspx" title="修改密码"  description="修改当前用户密码" />
+    </siteMapNode>
+
+
+  </siteMapNode>
+</siteMap>

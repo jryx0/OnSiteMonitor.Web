@@ -1,0 +1,28 @@
+﻿.DialogForm
+{
+    position: absolute;
+    left: 25%;
+    top: 120px;
+    
+    width: 680px;
+    height: 420px;
+    padding: 15px 15px 15px 15px;
+    background-color: #fff;
+    border: 1px solid #808080;
+    background-color: #CCCCCC;
+    z-index: 100;
+    display: none;
+}
+.DialogBG
+{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 50;
+    background-color: #dddddd;    
+    filter: alpha(opacity=40); /**/ /*IE*/ 
+    opacity:40; /**/ /*Firefox*/
+}

@@ -1,0 +1,91 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="WFM.JW.HB.Web.SiteMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>湖北纪委精准扶贫政策落实情况监督检查管理系统</title>
+    <!-- Framework CSS -->
+    <link href="~/Styles/Page.css" rel="stylesheet" type="text/css" />
+    <link href="~/Styles/Menu.css" rel="stylesheet" type="text/css" />
+    <link href="~/Styles/Blueprint/grid.css" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" type="text/css" href="~/Styles/Blueprint/ie.css" />
+    <![endif]-->
+    <link href="~/Styles/GridView.css" rel="stylesheet" type="text/css" />
+     <link href="~/Styles/Table.css" rel="stylesheet" type="text/css" />
+    <link href="~/Styles/Tooltip.css" rel="stylesheet" type="text/css" />
+    <script src="<%=Request.ApplicationPath == "/" ?  Request.ApplicationPath : Request.ApplicationPath + "/" %>Scripts/jquery-1.7.1.js" type="text/javascript"></script>
+    <script src="<%=Request.ApplicationPath == "/" ?  Request.ApplicationPath : Request.ApplicationPath +"/" %>Scripts/TableFunc.js" type="text/javascript"></script>
+    <script src="<%=Request.ApplicationPath == "/" ?  Request.ApplicationPath : Request.ApplicationPath +"/" %>Scripts/Tooltip.js" type="text/javascript"></script>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form runat="server" class="page">
+        <div class="container">
+            <div class="span-24 header">
+                <div class="span-15">
+                    <%--  <div class="span-1 logo"> 
+                   <img src="../Styles/Img/CloudLogging.png" width="32px" height="32px" /> 
+                   
+                </div>    --%>
+                    <p class="span-15">
+                        精准扶贫政策落实情况监督检查管理系统
+                    </p>
+                </div>
+                <div class="login pull-1 span-9" style="text-align: right">
+                    <asp:Label ID="CurrentRegionLabel" runat="server" Font-Bold="true"></asp:Label>
+                    <asp:LoginView ID="HeadLoginView" runat="server" EnableViewState="false">
+                        <AnonymousTemplate>
+                            [ <a href="~/Account/Login.aspx" id="HeadLoginStatus" runat="server">登录</a> ]
+                        </AnonymousTemplate>
+                        <LoggedInTemplate>
+                            <span class="bold"><a href="<%=Request.ApplicationPath == "/" ?  Request.ApplicationPath : Request.ApplicationPath +"/" %>CMSLogin/ChangePassword.aspx">
+                                <span>用户:</span>
+                                <asp:LoginName ID="HeadLoginName" runat="server" />
+                            </a></span>! [
+                        <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="注销"
+                            LogoutPageUrl="~/" />
+                            ]
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+                </div>
+                <%--<div class="span-4 push-1 logo">
+                    
+                    
+                </div>--%>
+            </div>
+            <div class="span-24">
+                <ul id="nav" style="width: 960px;">
+
+                    <li><a href="Javascript:void(0)">统计报表</a>
+                        <ul>
+                            <li><a href="<%=Request.ApplicationPath == "/" ?  Request.ApplicationPath : Request.ApplicationPath +"/" %>WFMClues/ClueReportRegion.aspx">按地区统计</a>
+                            </li>
+                            <li><a href="<%=Request.ApplicationPath == "/" ?  Request.ApplicationPath : Request.ApplicationPath +"/" %>WFMClues/ClueReportItem.aspx">按项目统计</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="Javascript:void(0)">线索管理</a>
+                        <ul>
+                            <li><a href="<%=Request.ApplicationPath == "/" ?  Request.ApplicationPath : Request.ApplicationPath +"/" %>WFMClues/ClueMgr.aspx">线索管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="<%=Request.ApplicationPath == "/" ?  Request.ApplicationPath : Request.ApplicationPath +"/" %>WFMTask/TaskMgr.aspx">上传数据管理</a></li>
+                   <%-- <li><a href="<%=Request.ApplicationPath == "/" ?  Request.ApplicationPath : Request.ApplicationPath +"/" %>CMSBaseType/BaseTypeQuery.aspx">基础数据</a></li>--%>
+                    <li><a href="<%=Request.ApplicationPath == "/" ?  Request.ApplicationPath : Request.ApplicationPath +"/"%>WFMUser/UserMgr.aspx">用户管理</a> </li>
+                    <li><a href="<%=Request.ApplicationPath == "/" ?  Request.ApplicationPath : Request.ApplicationPath +"/" %>WFMLogin/ChangePassword.aspx">修改密码</a>
+                    </li>
+                </ul>
+            </div>
+            <asp:SiteMapPath ID="SiteMapPath1" runat="server">
+            </asp:SiteMapPath>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+        </div>
+        <div class="footer">
+        </div>
+    </form>
+</body>
+</html>

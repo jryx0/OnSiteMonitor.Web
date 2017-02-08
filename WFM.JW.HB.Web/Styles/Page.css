@@ -1,0 +1,391 @@
+﻿
+
+body
+{
+    /*background: #b6b7bc;*/
+    font-size: .80em;
+    font-family: Microsoft YaHei,Simsun, Arial, Helvetica, sans-serif;
+    margin: 0px;
+    padding: 0px; /*color: #696969;*/
+}
+
+.page
+{
+    width: 950px;
+    margin: 5px auto 0px auto; /*     border: 1px solid #496077;       background-color: #fff;  */
+}
+
+.header
+{
+    vertical-align: middle;
+    height: 55px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #CCCCCC; /*filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorStr='#10ffffff', EndColorStr='#590401');     background-image: -moz-linear-gradient(left, #4b6c9e, #ffffff); */
+    color: #000;
+}
+
+.logo img
+{
+    margin-top: 13px;
+    margin-left: 2px;
+}
+
+.login
+{
+    margin-top: 2em;
+}
+
+.row
+{
+    width: auto;
+    display: inline-block;
+}
+
+.groupingborder
+{
+    padding: 10px;
+    border: 1px solid #969696;
+     
+}
+
+.groupingborder1
+{
+    /*padding: 10px;*/
+    border: 1px solid #969696;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.showborder
+{
+    border: 1px solid #FF0066 !important;
+}
+
+.header p
+{
+    margin: 0.1em 0 0 0;
+    font-size: 2.5em;
+}
+
+
+
+.Query
+{
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.Query span
+{
+    margin: 4px 4px 0 0px;
+    font-size: 1.2em;
+    line-height: 1.5em;
+    text-align: right;
+}
+
+
+input.title
+{
+    font-size: 1.2em;
+}
+
+input.text, input.title
+{
+    padding: 3px;
+    }
+
+input[type="text"], input[type="password"], input.text, input.title, textarea, select
+{
+    margin: 0.1em 0;
+}
+
+input[type="text"], input[type="password"], input.text, input.title, textarea
+{
+    background-color: #FFFFFF;
+    border: 1px solid #BBBBBB;
+}
+
+.readonly
+{
+    background-color: #FFCCCC !important;
+}
+
+select
+{
+    font-size: 1.2em;
+    padding: 1px 3px 3px 3px;
+    width: 190px;
+    background-color: #FFFFFF;
+    border: 1px solid #BBBBBB;
+}
+
+
+.Magin-0
+{
+    margin: 5px;
+}
+
+.Magin-1
+{
+    margin: 10px;
+}
+
+.Query a.LittleImageButton
+{
+    border: 1px solid #707070;
+    background: #FFF;
+    margin-left: 6px;
+}
+
+.Query a.LittleImageButton > img
+{
+    border-style: none;
+    width: 23px;
+    height: 23px;
+    margin-left: 4px;
+    margin-top: 3px;
+}
+
+
+.Query a.ImageButton, a.LittleImageButton
+{
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 2px;
+}
+
+
+
+.Query a.ImageButton > img
+{
+    border-style: none;
+    width: 24px;
+    height: 24px;
+    margin-left: 4px;
+}
+
+.Query a.ImageButton > span
+{
+    font-size: 1.2em;
+    margin-left: 2px;
+}
+
+.Query a.ImageButton
+{
+    border: 1px solid #707070;
+    padding: 2px 12px 2px 6px;
+    background: #FFF;
+}
+
+.Query a.ImageButton:hover, a.LittleImageButton:hover
+{
+    background: #F6E5ED;
+    border-color: #DE4077;
+}
+
+.hidden, .hiddencontrol
+{
+    visibility: hidden !important;
+}
+
+
+.DataArea a.ImageButton
+{
+    text-decoration: none;
+    display: inline-block;
+}
+
+.DataArea a.ImageButton > img
+{
+    border-style: none;
+    width: 20px;
+    height: 20px;
+}
+
+.DataArea a.ImageButton > span
+{
+    font-size: 1.0em;
+}
+.DataArea a.ImageButton
+{
+    padding: 0px 5px 2px 4px;
+    background: #FFF;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #fff;
+}
+
+.DataArea a.ImageButton:hover
+{
+    background: #F6E5ED;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #DE4077;
+}
+
+
+div .pager
+{
+    margin-top: 2px;
+}
+
+/*截断一行文字显示*/
+.mlength
+{
+    display: block;
+    width: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-left:0;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+
+ 
+
+.mlength-0
+{
+    display: block;
+    width: 50px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    margin-left: 5px;
+}
+.mlength-1
+{
+    display: block;
+    width: 75px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    margin-left: 5px;
+}
+.mlength-2
+{
+    display: block;
+    width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    margin-left: 5px;
+}
+.mlength-3
+{
+    display: block;
+    width: 125px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+
+.mlength-4
+{
+    display: block;
+    width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.mlength-5
+{
+    display: block;
+    width: 175px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.mlength-6
+{
+    display: block;
+    width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.mlength-7
+{
+    display: block;
+    width: 225px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.mlength-6
+{
+    display: block;
+    width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.mlength-7 {
+    display: block;
+    width: 275px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.mlength-8 {
+    display: block;
+    width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.mlength-9 {
+    display: block;
+    width: 325px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.mlength-10 {
+    display: block;
+    width: 350px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.mlength-11 {
+    display: block;
+    width: 375px;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+/****************************/
+.test
+{
+    position: relative;
+    top: 20px;
+    right: 30px;
+    border: 1px solid #999999;
+}
+
+
+.Numbers
+{
+    text-align:right;
+}
+
+.ReadOnly
+{
+    background-color: #C0C0C0;
+    border-color: #000000;
+}

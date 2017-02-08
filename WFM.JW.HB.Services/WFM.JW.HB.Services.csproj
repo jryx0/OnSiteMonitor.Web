@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{05ED3D81-D1F5-4A4A-B2FE-633351C25D65}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WFM.JW.HB.Services</RootNamespace>
+    <AssemblyName>WFM.JW.HB.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseTypeItemServices.cs" />
+    <Compile Include="BaseTypeServices.cs" />
+    <Compile Include="ContractServices.cs" />
+    <Compile Include="DepartmentService.cs" />
+    <Compile Include="EmployeeServices.cs" />
+    <Compile Include="ISerivces.cs" />
+    <Compile Include="ProjectInfoServices.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SAccountServices.cs" />
+    <Compile Include="SettlementServices.cs" />
+    <Compile Include="SupplierService.cs" />
+    <Compile Include="WFMClueReportService.cs" />
+    <Compile Include="WFMClueServices.cs" />
+    <Compile Include="WFMClueSummaryServices.cs" />
+    <Compile Include="WFMRegionCluesSeverices.cs" />
+    <Compile Include="WFMUploadTaskServices.cs" />
+    <Compile Include="UserMgrServices.cs" />
+    <Compile Include="UserService.cs" />
+    <Compile Include="WFMRegionServices.cs" />
+    <Compile Include="WFMRegionUserServices.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WFM.JW.HB.Models\WFM.JW.HB.Models.csproj">
+      <Project>{8F424437-648E-44CE-BFF6-487C7B253A72}</Project>
+      <Name>WFM.JW.HB.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WFM.JW.HB.Repository.EntLib\WFM.JW.HB.Repository.EntLib.csproj">
+      <Project>{AFDA6027-E95E-44EA-9F36-4BBD46771343}</Project>
+      <Name>WFM.JW.HB.Repository.EntLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

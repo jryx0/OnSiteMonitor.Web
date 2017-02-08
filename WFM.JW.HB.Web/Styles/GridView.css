@@ -1,0 +1,88 @@
+﻿*
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+.DataGridViewStyle
+{
+    text-decoration: none;
+    width: 98%;
+     
+    color: #333;
+    vertical-align: middle;
+    border-collapse: collapse;
+    word-break: keep-all;
+    word-wrap: normal;
+    font-weight: 100;
+    margin-left: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #969696 #969696 #969696 #969696;
+}
+
+.DataGridViewStyle td
+{
+    font-size: 1.1em;
+    border: 1px solid #969696; /* #88A4C1;   font-family: Microsoft YaHei,Simsun, Arial, Helvetica, sans-serif;*/
+    color: #333333;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.DataGridViewStyle tr
+{
+    line-height: 2.1em; /* background-color: #F5F8FB;*/
+}
+.DataGridViewStyle th
+{
+    font-size: 1.2em; /*    font-family: Microsoft YaHei,Simsun, Arial, Helvetica, sans-serif;*/
+    border: 1px solid #969696; /*#88A4C1; background-color: #E3ECF4;*/
+    background-color: #F6E5ED;
+    color: #000000;
+    line-height: 1.8em;
+    font-weight: 700;
+}
+
+
+.DataGridViewStyle tr:not(.emptyrow):not(.tr-header):hover td
+{
+    background-color: #FE5050;
+    color: #FFFFFF;
+}
+
+.DataGridViewStyle tr:hover td
+{
+    background-color: #FE5050;
+    color: #FFFFFF;
+}
+
+
+
+.DataGridViewStyle .tr-selected, .DataGridViewStyle .tr-selected td
+{
+    /*    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorStr='#ffffff', EndColorStr='#10590401');          background-image: -moz-linear-gradient(left, #4b6c9e, #ffffff); background-color: #FE5050;*/
+    background-color: #FE9696;
+    color: #FFFFFF !important;
+}
+
+.DataGridViewStyle .tr-Alternating
+{
+    background-color: #EEEEEE;
+    color: #000000;
+}
+
+
+.DataGridViewStyle .tr-header td
+{
+    font-size: 1.2em; /*    font-family: Microsoft YaHei,Simsun, Arial, Helvetica, sans-serif;*/
+    border: 1px solid #969696 /*#88A4C1; background-color: #E3ECF4;      background-color:#F6E5ED;*/ color: #000000;
+    line-height: 1.8em;
+    font-weight: 400;
+}
+
+.samerow
+{
+    font-style: italic;
+    color: #C0C0C0 !important
+}

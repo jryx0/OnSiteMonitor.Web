@@ -1,0 +1,583 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{05389CE4-C3FA-4C87-ADEC-F9D676A2E877}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WFM.JW.HB.Web</RootNamespace>
+    <AssemblyName>WFM.JW.HB.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <TargetFrameworkProfile />
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CarlosAg.ExcelXmlWriter">
+      <HintPath>..\packages\CarlosAg.ExcelXmlWriter.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NPOI, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.OOXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UniversalTypeConverter">
+      <HintPath>..\packages\UniversalTypeConverter.1.0\lib\net35\UniversalTypeConverter.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="About.aspx" />
+    <Content Include="Account\Register.aspx" />
+    <Content Include="App_Data\CMS_CSCL_WH.mdf" />
+    <Content Include="App_Data\CMS_CSCL_WH_log.ldf">
+      <DependentUpon>CMS_CSCL_WH.mdf</DependentUpon>
+    </Content>
+    <Content Include="CMSBaseType\BaseTypeItemEdit.aspx" />
+    <Content Include="CMSBaseType\BaseTypeItemQuery.aspx" />
+    <Content Include="CMSBaseType\BaseTypeQuery.aspx" />
+    <Content Include="CMSBaseType\BaseTypeEdit.aspx" />
+    <Content Include="CMSContract\ContractEdit.aspx" />
+    <Content Include="CMSContract\ContractView.aspx" />
+    <Content Include="CMSDepartment\DepartmentView.aspx" />
+    <Content Include="CMSDepartment\DepartmentEdit.aspx" />
+    <Content Include="CMSEmployees\EmployeesEdit.aspx" />
+    <Content Include="CMSEmployees\EmployeesView.aspx" />
+    <Content Include="Styles\Table.css" />
+    <Content Include="WFMClues\ClueBI.aspx" />
+    <Content Include="WFMClues\ClueReportItem.aspx" />
+    <Content Include="WFMClues\ClueReportRegion.aspx" />
+    <Content Include="WFMClues\ClueSummaryRegion.aspx" />
+    <Content Include="WFMClues\ClueSummaryItem.aspx" />
+    <Content Include="WFMClues\CluesEdit.aspx" />
+    <Content Include="WFMClues\ClueMgr.aspx" />
+    <Content Include="WFMLogin\ChangePassword.aspx" />
+    <Content Include="WFMLogin\Default.aspx" />
+    <Content Include="WFMLogin\Image\CSCL-Login.png" />
+    <Content Include="WFMLogin\Login.aspx" />
+    <Content Include="CMSProject\ProjectInfoView.aspx" />
+    <Content Include="CMSProject\ProjectInfoEdit.aspx" />
+    <Content Include="CMSSettlementAccount\SAccountView.aspx" />
+    <Content Include="CMSSettlement\SAccountQuery.aspx" />
+    <Content Include="CMSSettlement\SettlementEdit.aspx" />
+    <Content Include="CMSSettlement\SettlementView.aspx" />
+    <Content Include="CMSSupplier\CMSSupplierEdit.aspx" />
+    <Content Include="CMSSupplier\CMSSupplierView.aspx" />
+    <Content Include="CMSSystem\DatabaseBackup.aspx" />
+    <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\jquery-1.7-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.7.1.js" />
+    <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.8.21.custom.min.js" />
+    <Content Include="Scripts\My97DatePicker\calendar.js" />
+    <Content Include="Scripts\My97DatePicker\lang\en.js" />
+    <Content Include="Scripts\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="Scripts\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="Scripts\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="Scripts\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="Scripts\My97DatePicker\skin\default\img.gif" />
+    <Content Include="Scripts\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="Scripts\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="Scripts\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="Scripts\My97DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="Scripts\My97DatePicker\WdatePicker.js" />
+    <Content Include="Scripts\My97DatePicker\开发包\lang\en.js" />
+    <Content Include="Scripts\My97DatePicker\开发包\lang\zh-cn.js" />
+    <Content Include="Scripts\My97DatePicker\开发包\lang\zh-tw.js" />
+    <Content Include="Scripts\My97DatePicker\开发包\readme.txt" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\datePicker.gif" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\default\datepicker.css" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\default\img.gif" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\WdatePicker.css" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\bg.jpg" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\datepicker.css" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\img.gif" />
+    <Content Include="Scripts\TableFunc.js" />
+    <Content Include="Styles\Blueprint\grid.css" />
+    <Content Include="Styles\Blueprint\ie.css" />
+    <Content Include="Styles\Blueprint\print.css" />
+    <Content Include="Styles\Blueprint\screen.css" />
+    <Content Include="Styles\Blueprint\src\grid.png" />
+    <Content Include="Styles\Dialog.css" />
+    <Content Include="Styles\GridView.css" />
+    <Content Include="Styles\Img\apply.ico" />
+    <Content Include="Styles\Img\Cancel.ico" />
+    <Content Include="Styles\Img\CloudLogging.png" />
+    <Content Include="Styles\Img\CSCL-Logo1.jpg" />
+    <Content Include="Styles\Img\CSCL-Logo2.jpg" />
+    <Content Include="Styles\Img\datePicker.gif" />
+    <Content Include="Styles\Img\Detail.ico" />
+    <Content Include="Styles\Img\export.ico" />
+    <Content Include="Styles\Img\Find.ico" />
+    <Content Include="Styles\Img\go.GIF" />
+    <Content Include="Styles\Img\Modify.ico" />
+    <Content Include="Styles\Img\New.png" />
+    <Content Include="Styles\Img\pagedown.GIF" />
+    <Content Include="Styles\Img\pagehome.GIF" />
+    <Content Include="Styles\Img\pagelast.GIF" />
+    <Content Include="Styles\Img\pageup.GIF" />
+    <Content Include="Styles\Img\Refresh.png" />
+    <Content Include="Styles\Img\save.ico" />
+    <Content Include="Styles\Img\undo.ico" />
+    <Content Include="Styles\Menu.css" />
+    <Content Include="Styles\Page.css" />
+    <Content Include="Styles\Tooltip.css" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="CMSContract\WebSupplierServices.asmx" />
+    <Content Include="WebUtility\Pages.ascx" />
+    <Content Include="WFMLogin\WebForm1.aspx" />
+    <Content Include="WFMRegion\RegionEdit.aspx" />
+    <Content Include="WFMRegion\RegionView.aspx" />
+    <Content Include="WFMTask\TaskEdit.aspx" />
+    <Content Include="WFMTask\TaskMgr.aspx" />
+    <Content Include="WFMUser\UserEdit.aspx" />
+    <Content Include="WFMUser\UserMgr.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="About.aspx.designer.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSBaseType\BaseTypeItemEdit.aspx.cs">
+      <DependentUpon>BaseTypeItemEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSBaseType\BaseTypeItemEdit.aspx.designer.cs">
+      <DependentUpon>BaseTypeItemEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSBaseType\BaseTypeItemQuery.aspx.cs">
+      <DependentUpon>BaseTypeItemQuery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSBaseType\BaseTypeItemQuery.aspx.designer.cs">
+      <DependentUpon>BaseTypeItemQuery.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSBaseType\BaseTypeQuery.aspx.cs">
+      <DependentUpon>BaseTypeQuery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSBaseType\BaseTypeQuery.aspx.designer.cs">
+      <DependentUpon>BaseTypeQuery.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSBaseType\BaseTypeEdit.aspx.cs">
+      <DependentUpon>BaseTypeEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSBaseType\BaseTypeEdit.aspx.designer.cs">
+      <DependentUpon>BaseTypeEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSContract\ContractEdit.aspx.cs">
+      <DependentUpon>ContractEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSContract\ContractEdit.aspx.designer.cs">
+      <DependentUpon>ContractEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSContract\ContractView.aspx.cs">
+      <DependentUpon>ContractView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSContract\ContractView.aspx.designer.cs">
+      <DependentUpon>ContractView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSDepartment\DepartmentView.aspx.cs">
+      <DependentUpon>DepartmentView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSDepartment\DepartmentView.aspx.designer.cs">
+      <DependentUpon>DepartmentView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSDepartment\DepartmentEdit.aspx.cs">
+      <DependentUpon>DepartmentEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSDepartment\DepartmentEdit.aspx.designer.cs">
+      <DependentUpon>DepartmentEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSEmployees\EmployeesEdit.aspx.cs">
+      <DependentUpon>EmployeesEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSEmployees\EmployeesEdit.aspx.designer.cs">
+      <DependentUpon>EmployeesEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSEmployees\EmployeesView.aspx.cs">
+      <DependentUpon>EmployeesView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSEmployees\EmployeesView.aspx.designer.cs">
+      <DependentUpon>EmployeesView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMClues\ClueBI.aspx.cs">
+      <DependentUpon>ClueBI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMClues\ClueBI.aspx.designer.cs">
+      <DependentUpon>ClueBI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMClues\ClueReportItem.aspx.cs">
+      <DependentUpon>ClueReportItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMClues\ClueReportItem.aspx.designer.cs">
+      <DependentUpon>ClueReportItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMClues\ClueReportRegion.aspx.cs">
+      <DependentUpon>ClueReportRegion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMClues\ClueReportRegion.aspx.designer.cs">
+      <DependentUpon>ClueReportRegion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMClues\ClueSummaryRegion.aspx.cs">
+      <DependentUpon>ClueSummaryRegion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMClues\ClueSummaryRegion.aspx.designer.cs">
+      <DependentUpon>ClueSummaryRegion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMClues\ClueSummaryItem.aspx.cs">
+      <DependentUpon>ClueSummaryItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMClues\ClueSummaryItem.aspx.designer.cs">
+      <DependentUpon>ClueSummaryItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMClues\CluesEdit.aspx.cs">
+      <DependentUpon>CluesEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMClues\CluesEdit.aspx.designer.cs">
+      <DependentUpon>CluesEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMClues\ClueMgr.aspx.cs">
+      <DependentUpon>ClueMgr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMClues\ClueMgr.aspx.designer.cs">
+      <DependentUpon>ClueMgr.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMLogin\ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMLogin\ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMLogin\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMLogin\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMLogin\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMLogin\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSProject\ProjectInfoView.aspx.cs">
+      <DependentUpon>ProjectInfoView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSProject\ProjectInfoView.aspx.designer.cs">
+      <DependentUpon>ProjectInfoView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSProject\ProjectInfoEdit.aspx.cs">
+      <DependentUpon>ProjectInfoEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSProject\ProjectInfoEdit.aspx.designer.cs">
+      <DependentUpon>ProjectInfoEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSReport\ContractReport.cs" />
+    <Compile Include="CMSReport\CSReport.cs" />
+    <Compile Include="CMSReport\SAccountReport.cs" />
+    <Compile Include="CMSSettlementAccount\SAccountView.aspx.cs">
+      <DependentUpon>SAccountView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSSettlementAccount\SAccountView.aspx.designer.cs">
+      <DependentUpon>SAccountView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSSettlement\SAccountQuery.aspx.cs">
+      <DependentUpon>SAccountQuery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSSettlement\SAccountQuery.aspx.designer.cs">
+      <DependentUpon>SAccountQuery.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSSettlement\SettlementEdit.aspx.cs">
+      <DependentUpon>SettlementEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSSettlement\SettlementEdit.aspx.designer.cs">
+      <DependentUpon>SettlementEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSSettlement\SettlementView.aspx.cs">
+      <DependentUpon>SettlementView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSSettlement\SettlementView.aspx.designer.cs">
+      <DependentUpon>SettlementView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSSupplier\CMSSupplierEdit.aspx.cs">
+      <DependentUpon>CMSSupplierEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSSupplier\CMSSupplierEdit.aspx.designer.cs">
+      <DependentUpon>CMSSupplierEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSSupplier\CMSSupplierView.aspx.cs">
+      <DependentUpon>CMSSupplierView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSSupplier\CMSSupplierView.aspx.designer.cs">
+      <DependentUpon>CMSSupplierView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSSystem\DatabaseBackup.aspx.cs">
+      <DependentUpon>DatabaseBackup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSSystem\DatabaseBackup.aspx.designer.cs">
+      <DependentUpon>DatabaseBackup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\DataBase.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="CMSContract\WebSupplierServices.asmx.cs">
+      <DependentUpon>WebSupplierServices.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WebUtility\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebUtility\CloudLogging.GridViewEx.cs" />
+    <Compile Include="WebUtility\GenericConverter.cs" />
+    <Compile Include="WebUtility\Pages.ascx.cs">
+      <DependentUpon>Pages.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebUtility\Pages.ascx.designer.cs">
+      <DependentUpon>Pages.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="WebUtility\PageSupport.cs" />
+    <Compile Include="WebUtility\CloudLogging.DropDownListEx.cs" />
+    <Compile Include="WFMLogin\WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMLogin\WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMRegion\RegionEdit.aspx.cs">
+      <DependentUpon>RegionEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMRegion\RegionEdit.aspx.designer.cs">
+      <DependentUpon>RegionEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMRegion\RegionView.aspx.cs">
+      <DependentUpon>RegionView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMRegion\RegionView.aspx.designer.cs">
+      <DependentUpon>RegionView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMTask\TaskEdit.aspx.cs">
+      <DependentUpon>TaskEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMTask\TaskEdit.aspx.designer.cs">
+      <DependentUpon>TaskEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMTask\TaskMgr.aspx.cs">
+      <DependentUpon>TaskMgr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMTask\TaskMgr.aspx.designer.cs">
+      <DependentUpon>TaskMgr.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMUser\UserEdit.aspx.cs">
+      <DependentUpon>UserEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMUser\UserEdit.aspx.designer.cs">
+      <DependentUpon>UserEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WFMUser\UserMgr.aspx.cs">
+      <DependentUpon>UserMgr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WFMUser\UserMgr.aspx.designer.cs">
+      <DependentUpon>UserMgr.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Site.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WFM.JW.HB.Models\WFM.JW.HB.Models.csproj">
+      <Project>{8F424437-648E-44CE-BFF6-487C7B253A72}</Project>
+      <Name>WFM.JW.HB.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WFM.JW.HB.Services\WFM.JW.HB.Services.csproj">
+      <Project>{05ED3D81-D1F5-4A4A-B2FE-633351C25D65}</Project>
+      <Name>WFM.JW.HB.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="WFMLogin\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.sitemap">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Account\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\Web Package.pubxml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>12792</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:12792/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>http://192.168.10.1/wfm</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
