@@ -30,7 +30,6 @@ namespace FileTransfer.MTOM.WebServices
             UploadRootPath = ConfigurationManager.AppSettings["UploadPath"].ToString();
         }
 
-
         #region Login
         [WebMethod(EnableSession = true)]
         public string Login(string logintoken, string UserName, string Password)
@@ -73,6 +72,28 @@ namespace FileTransfer.MTOM.WebServices
 
             return "";           
         }
+
+        //ToDO: Update local sqliteDB
+        [WebMethod(EnableSession = true)]
+        public string GetUpdateInfo(string logintoken, string lasetupdateversion)
+        {
+            UserRegionInfo uri = (UserRegionInfo)Session[logintoken];
+            if (uri == null)
+                return "";
+
+            return "";
+        }
+
+        [WebMethod(EnableSession = true)]
+        public bool SetUpdateSign(string logintoken, string version)
+        {
+            UserRegionInfo uri = (UserRegionInfo)Session[logintoken];
+            if (uri == null)
+                return false;
+
+            return true;
+        }
+
         #endregion
 
         #region UpdateCheckData
