@@ -1,4 +1,4 @@
-﻿using FileTranser.MTOM.ClassLibrary;
+﻿using FileTransfer.MTOM.WebServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
