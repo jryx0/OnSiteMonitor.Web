@@ -36,12 +36,13 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.FileFinder = new System.Windows.Forms.Timer(this.components);
             this.lbInfo = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.Location = new System.Drawing.Point(8, 378);
+            this.button1.Location = new System.Drawing.Point(8, 404);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(104, 28);
@@ -53,7 +54,7 @@
             // button2
             // 
             this.button2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.button2.Location = new System.Drawing.Point(249, 378);
+            this.button2.Location = new System.Drawing.Point(249, 404);
             this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(104, 28);
@@ -65,7 +66,7 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(491, 378);
+            this.button3.Location = new System.Drawing.Point(491, 404);
             this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(104, 28);
@@ -86,14 +87,14 @@
             this.tbLogWin.Name = "tbLogWin";
             this.tbLogWin.ReadOnly = true;
             this.tbLogWin.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbLogWin.Size = new System.Drawing.Size(588, 297);
+            this.tbLogWin.Size = new System.Drawing.Size(588, 323);
             this.tbLogWin.TabIndex = 1;
             // 
             // progressBar1
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(8, 331);
+            this.progressBar1.Location = new System.Drawing.Point(8, 347);
             this.progressBar1.Margin = new System.Windows.Forms.Padding(2);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(587, 19);
@@ -109,18 +110,29 @@
             this.lbInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbInfo.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbInfo.Location = new System.Drawing.Point(9, 353);
+            this.lbInfo.Location = new System.Drawing.Point(9, 379);
             this.lbInfo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbInfo.Name = "lbInfo";
             this.lbInfo.Size = new System.Drawing.Size(586, 14);
             this.lbInfo.TabIndex = 3;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(8, 376);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(51, 21);
+            this.checkBox1.TabIndex = 4;
+            this.checkBox1.Text = "加密";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // UploadFileMonitorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(607, 416);
+            this.ClientSize = new System.Drawing.Size(607, 442);
             this.ControlBox = false;
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.lbInfo);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.tbLogWin);
@@ -145,6 +157,7 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Timer FileFinder;
         private System.Windows.Forms.Label lbInfo;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

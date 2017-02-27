@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TMPA.FileMonitor.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TimerInterval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="ConnectionStr" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Provider = SQLNCLI11; Data Source = 156.18.1.93; Initial Catalog =tmpa; User ID = sa; Password = df.jw.hb@2016</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

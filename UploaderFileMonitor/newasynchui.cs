@@ -52,7 +52,7 @@ namespace UploaderFileMonitor
             foreach (var t in tlist)
             {
                 var dataFile = GetImportFileName(t);
-                using (DAL.MySqlite resultDB = new DAL.MySqlite(dataFile))
+                using (DAL.MySqlite resultDB = new DAL.MySqlite(dataFile, ""))
                 {
                     var ds = resultDB.ExecuteDataset("Select count() totalnum, sum(inputerror) inputerrors, sum(case when inputerror = 1 then 0 else 1 end) clues from clue_report");
 
@@ -243,7 +243,7 @@ namespace UploaderFileMonitor
 
         private void ImportData(WFMRegionClueSeverices rcs, String dataFile, WFMUploadTask uTask)
         {
-            using (DAL.MySqlite resultDB = new DAL.MySqlite(dataFile))
+            using (DAL.MySqlite resultDB = new DAL.MySqlite(dataFile, ""))
             {
 
                 var o = resultDB.ExecuteScalar("Select count() from  Clue_report");
@@ -439,7 +439,7 @@ namespace UploaderFileMonitor
             insertSql = insertSql.Replace("@table", uTask.RegionCode);
 
 
-            using (DAL.MySqlite resultDB = new DAL.MySqlite(datafile))
+            using (DAL.MySqlite resultDB = new DAL.MySqlite(datafile, ""))
             {
 
                 var o = resultDB.ExecuteScalar("Select count() from  report");

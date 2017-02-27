@@ -1,190 +1,233 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SQLite;
+using System.Data.OleDb;
 using System.Linq;
-using System.Reflection;
 using System.Text;
+using System.Threading;
 
-namespace UploaderFileMonitor.DAL
+namespace TMPA.FileMonitor.DAL
 {
-    public class MySqlite : IDisposable
+    public class MyDataBase
     {
-        public String sqliteConnectionString { get; set; }
-        public String sqlitePassword { get; set; }
+        public bool m_haserror = false;
+        public bool AccessVisitControl = true;
 
-        private SQLiteConnection sqliteConn = new SQLiteConnection();
-
-        private SQLiteConnectionStringBuilder sqliteConnstrBuilder =
-            new SQLiteConnectionStringBuilder();
-
-        private SQLiteTransaction sqliteTransaction = null;
-
-        private bool isInit = false;
-        private bool isTrans = false;
-
-        #region Sqlite Init
-        public MySqlite()
+        private System.Threading.ManualResetEvent mEvent = new ManualResetEvent(true);
+        public MyDataBase()
         {
-            sqliteConnectionString = "";
-            isInit = false;
-            isTrans = false;
-            sqlitePassword = "dfjwhb2014";
+
         }
 
-        public MySqlite(String connStr)
+        #region DataBase Connection string
+        private string m_DBConnectionString = "";
+        public string DBConnectionString
         {
-            sqliteConnectionString = connStr;
-            isInit = false;
-            isTrans = false;
-            sqlitePassword = "dfjwhb2014";
-        }
-
-        public MySqlite(String connStr, string password)
-        {
-            sqliteConnectionString = connStr;
-            isInit = false;
-            isTrans = false;
-            if(password.Length != 0)
-                sqlitePassword = password;
-        }
-
-
-        private void InitSqliteDB()
-        {
-            lock (this)
-            {
-                //sqliteConnstrBuilder.DataSource = sqliteConnectionString;
-                //sqliteConn.ConnectionString = sqliteConnstrBuilder.ToString();
-
-                if (sqliteConn.State == System.Data.ConnectionState.Closed)
-                {
-                    sqliteConnstrBuilder.DataSource = sqliteConnectionString;
-                    sqliteConnstrBuilder.Version = 3;
-                    sqliteConnstrBuilder.Password = sqlitePassword;
-
-                    sqliteConn.ConnectionString = sqliteConnstrBuilder.ToString();
-                    
-                    sqliteConn.Open();
-
-
-                    
-
-                    isInit = true;
-                }
-            }
+            set { this.m_DBConnectionString = value; }
+            get { return this.m_DBConnectionString; }
         }
         #endregion
 
-        #region trans
-        public void BeginTran()
+        #region Data Base Connection Object,Transaction
+        private System.Data.OleDb.OleDbTransaction m_transaction;
+        private System.Data.OleDb.OleDbConnection m_conn;
+        private bool m_NeedTran = false;
+        public bool NeedTran
         {
-            lock (this)
-            {
-                if (!isTrans)
-                {
-                    if (sqliteConn.State == System.Data.ConnectionState.Closed)
-                    {
-                        sqliteConnstrBuilder.DataSource = sqliteConnectionString;
-                        sqliteConn.ConnectionString = sqliteConnstrBuilder.ToString();
-                        sqliteConn.Open();
-                    }
-                    sqliteTransaction = sqliteConn.BeginTransaction();
-                    isTrans = true;
-                }
-            }
-        }
-        public void Commit()
-        {
-            lock (this)
-            {
-                if (isTrans && sqliteTransaction != null)
-                {
-                    sqliteTransaction.Commit();
-                    sqliteTransaction.Dispose();
-                    isTrans = false;
-                }
-            }
-        }
-
-        public void RollBack()
-        {
-            lock (this)
-            {
-                if (isTrans && sqliteTransaction != null)
-                {
-                    sqliteTransaction.Rollback();
-                    sqliteTransaction.Dispose();
-                    isTrans = false;
-                }
-            }
+            get { return this.m_NeedTran; }
+            set { this.m_NeedTran = value; }
         }
         #endregion
 
-        #region Close DataBase Connection
+        #region Init Data Base Connection
+        private void InitConnection()
+        {
+            if (m_conn == null)
+            {
+                m_conn = new System.Data.OleDb.OleDbConnection(this.m_DBConnectionString);
+                //m_conn=new System.Data.OleDb.OracleConnection(Configure.DBConnection);
+                m_conn.ConnectionString = this.m_DBConnectionString;
+                m_conn.Open();
+                if (this.m_NeedTran)
+                {
+                    this.m_transaction = m_conn.BeginTransaction();
+
+                }
+
+            }
+            else
+            {
+                if (m_conn.State == ConnectionState.Closed)
+                {
+                    //zr修改
+                    m_conn.ConnectionString = this.m_DBConnectionString;
+                    m_conn.Open();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Close Data Base Connection
         public void CloseConnection()
         {
-            lock (this)
-            {
-                if (sqliteConn != null)
-                {
-                    if (sqliteConn.State == ConnectionState.Open)
-                    {                        
-                        sqliteConn.Close();
-                    }
-                    
-                    sqliteConn.Dispose();
-                    sqliteConn.Dispose();                    
 
-                    isInit = false;
+            if (m_conn != null)
+            {
+
+                if (m_conn.State == ConnectionState.Open)
+                {
+                    m_conn.Close();
                 }
+                m_conn.Dispose();
+                m_conn.Dispose();
             }
         }
         #endregion
 
+        #region Rollback 
+        public void RollBack()
+        {
+            if (this.m_transaction != null)
+            {
+                this.m_transaction.Rollback();
+            }
+            this.m_NeedTran = false;
+        }
+        #endregion
+
+        #region Commit 
+        public void Commit()
+        {
+            if (this.m_transaction != null)
+            {
+                this.m_transaction.Commit();
+            }
+            this.m_NeedTran = false;
+        }
+        #endregion
+
+        #region Begin Tran
+        public void BeginTran()
+        {
+            this.m_NeedTran = true;
+
+            if (m_conn == null)
+            {
+                m_conn = new System.Data.OleDb.OleDbConnection(this.m_DBConnectionString);
+                m_conn.ConnectionString = this.m_DBConnectionString;
+                m_conn.Open();
+            }
+            else
+            {
+                if (m_conn.State == ConnectionState.Closed)
+                {
+                    //hlh: 2005.08.29 修改
+                    m_conn.ConnectionString = this.m_DBConnectionString;
+                    m_conn.Open();
+                }
+            }
+            this.m_transaction = m_conn.BeginTransaction();
+        }
+        #endregion
+
+        #region  Synchronization DB operation for ACCESS
+        public void Enter()
+        {
+            Monitor.Enter(this);
+            return;
+        }
+
+        public void Exit()
+        {
+            Monitor.Exit(this);
+            return;
+        }
+        #endregion
+
+        #region 公用的操作数据库的方法
+
         #region ExecuteNonQuery
+        //Use for access
+        public int ExecuteNonQuery(string commandText, bool bExclude)
+        {
+            int nRet = -1;
+
+            if (bExclude)
+            {
+                lock (m_DBConnectionString)
+                {
+                    //Monitor.Enter(m_DBConnectionString);
+                    nRet = ExecuteNonQuery(commandText);
+                    //Monitor.Exit(m_DBConnectionString);
+                }
+            }
+            else nRet = ExecuteNonQuery(commandText);
+
+            return nRet;
+        }
 
         public int ExecuteNonQuery(string commandText)
         {
             return this.ExecuteNonQuery(CommandType.Text, commandText);
         }
-        public int ExecuteNonQuery(CommandType commType, string commandText)
+
+        public int ExecuteNonQuery(CommandType commandType, string commandText)
         {
             try
             {
-                this.InitSqliteDB();
-                if (this.isTrans)
-                    return SqlHelperSqlite.ExecuteNonQuery(this.sqliteTransaction, commType, commandText);
+                this.InitConnection();
+                if (this.m_NeedTran)
+                    return SqlHelper.ExecuteNonQuery(this.m_transaction, commandType, commandText);
                 else
-                    return SqlHelperSqlite.ExecuteNonQuery(this.sqliteConn, commType, commandText);
+                    return SqlHelper.ExecuteNonQuery(this.m_conn, commandType, commandText);
             }
             catch (Exception e)
             {
-                //this.m_haserror = true;
+                this.m_haserror = true;
                 //Log.instance().AsynWriteLog("ExecuteNonQuery Error:" + e.Message, Log.LOGLEVEL.Error);
                 throw new System.Exception(e.Message, e.InnerException);
             }
         }
+
         public int ExecuteNonQuery(CommandType commandType, string commandText, params IDbDataParameter[] commandParameters)
         {
             try
             {
-                this.InitSqliteDB();
-                if (this.isTrans)
-                    return SqlHelperSqlite.ExecuteNonQuery(this.sqliteTransaction, commandType, commandText, commandParameters);
+                this.InitConnection();
+                if (this.m_NeedTran)
+                    return SqlHelper.ExecuteNonQuery(this.m_transaction, commandType, commandText, commandParameters);
                 else
-                    return SqlHelperSqlite.ExecuteNonQuery(this.sqliteConn, commandType, commandText, commandParameters);
+                    return SqlHelper.ExecuteNonQuery(this.m_conn, commandType, commandText, commandParameters);
             }
             catch (Exception e)
             {
-                //this.m_haserror = true;
+                this.m_haserror = true;
                 throw new System.Exception(e.Message, e.InnerException);
                 //Log.instance().AsynWriteLog("ExecuteNonQuery Error:" + e.Message, Log.LOGLEVEL.Error);
 
             }
         }
 
-        #endregion
+        public int ExecuteNonQuery(string spName, params IDbDataParameter[] parameterValues)
+        {
+            try
+            {
+                this.InitConnection();
+                //return Data.SqlHelperDB.ExecuteNonQuery(this.m_transaction,spName,parameterValues);
+                if (this.m_NeedTran)
+                    return SqlHelper.ExecuteNonQuery(this.m_transaction, CommandType.StoredProcedure, spName, parameterValues);
+                else
+                    return SqlHelper.ExecuteNonQuery(this.m_conn, CommandType.StoredProcedure, spName, parameterValues);
+            }
+            catch (Exception e)
+            {
+                this.m_haserror = true;
+                throw new System.Exception(e.Message, e.InnerException);
+            }
+        }
+
+        #endregion ExecuteNonQuery
 
         #region ExecuteDataSet
         public DataSet ExecuteDataset(string commandText)
@@ -196,43 +239,130 @@ namespace UploaderFileMonitor.DAL
         {
             try
             {
-                this.InitSqliteDB();
-                return SqlHelperSqlite.ExecuteDataset(this.sqliteConn, CommandType.Text, commandText, sTableName, (IDbDataParameter[])null);
+                this.InitConnection();
+                return SqlHelper.ExecuteDataset(this.m_conn, CommandType.Text, commandText, sTableName, (IDbDataParameter[])null);
             }
             catch (Exception e)
             {
-                // this.m_haserror = true;
+                this.m_haserror = true;
                 throw new System.Exception(e.Message, e.InnerException);
             }
+
+
+
         }
 
         public DataSet ExecuteDataset(CommandType commandType, string commandText)
         {
             try
             {
-                this.InitSqliteDB();
-                return SqlHelperSqlite.ExecuteDataset(this.sqliteConn, commandType, commandText);
+                this.InitConnection();
+                if (this.m_NeedTran)
+                    return SqlHelper.ExecuteDataset(this.m_transaction, commandType, commandText);
+                else
+                    return SqlHelper.ExecuteDataset(this.m_conn, commandType, commandText);
             }
             catch (Exception e)
             {
-                // this.m_haserror = true;
+                this.m_haserror = true;
                 throw new System.Exception(e.Message, e.InnerException);
             }
         }
+
         public DataSet ExecuteDataset(CommandType commandType, string commandText, params IDbDataParameter[] commandParameters)
         {
             try
             {
-                this.InitSqliteDB();
-                return SqlHelperSqlite.ExecuteDataset(this.sqliteConn, commandType, commandText, commandParameters);
+                this.InitConnection();
+                if (this.m_NeedTran)
+                    return SqlHelper.ExecuteDataset(this.m_transaction, commandType, commandText, commandParameters);
+                else
+                    return SqlHelper.ExecuteDataset(this.m_conn, commandType, commandText, commandParameters);
             }
             catch (Exception e)
             {
-                // this.m_haserror = true;
+                this.m_haserror = true;
+                throw new System.Exception(e.Message, e.InnerException);
+            }
+        }
+
+        public DataSet ExecuteDataset(string spName, params IDbDataParameter[] parameterValues)
+        {
+            try
+            {
+                this.InitConnection();
+                //return Data.SqlHelperDB.ExecuteDataset(this.m_transaction,spName,parameterValues);
+                if (this.m_NeedTran)
+                    return SqlHelper.ExecuteDataset(this.m_transaction, CommandType.StoredProcedure, spName, parameterValues);
+                else
+                    return SqlHelper.ExecuteDataset(this.m_conn, CommandType.StoredProcedure, spName, parameterValues);
+            }
+            catch (Exception e)
+            {
+                this.m_haserror = true;
                 throw new System.Exception(e.Message, e.InnerException);
             }
         }
         #endregion ExecuteDataSet
+
+        #region ExecuteReader
+        public System.Data.OleDb.OleDbDataReader ExecuteReader(string commandText)
+        {
+            return this.ExecuteReader(CommandType.Text, commandText);
+        }
+
+        public System.Data.OleDb.OleDbDataReader ExecuteReader(CommandType commandType, string commandText)
+        {
+            try
+            {
+                this.InitConnection();
+                if (this.m_NeedTran)
+                    return SqlHelper.ExecuteReader(this.m_transaction, commandType, commandText);
+                else
+                    return SqlHelper.ExecuteReader(this.m_conn, commandType, commandText);
+            }
+            catch (Exception e)
+            {
+                this.m_haserror = true;
+                throw new System.Exception(e.Message, e.InnerException);
+            }
+        }
+
+        public System.Data.OleDb.OleDbDataReader ExecuteReader(CommandType commandType, string commandText, params IDbDataParameter[] commandParameters)
+        {
+            try
+            {
+                this.InitConnection();
+                if (this.m_NeedTran)
+                    return SqlHelper.ExecuteReader(this.m_transaction, commandType, commandText, commandParameters);
+                else
+                    return SqlHelper.ExecuteReader(this.m_conn, commandType, commandText, commandParameters);
+            }
+            catch (Exception e)
+            {
+                this.m_haserror = true;
+                throw new System.Exception(e.Message, e.InnerException);
+            }
+        }
+
+        public System.Data.OleDb.OleDbDataReader ExecuteReader(string spName, params IDbDataParameter[] parameterValues)
+        {
+            try
+            {
+                this.InitConnection();
+                //return Data.SqlHelperDB.ExecuteReader(this.m_transaction,spName,parameterValues);
+                if (this.m_NeedTran)
+                    return SqlHelper.ExecuteReader(this.m_transaction, CommandType.StoredProcedure, spName, parameterValues);
+                else
+                    return SqlHelper.ExecuteReader(this.m_conn, CommandType.StoredProcedure, spName, parameterValues);
+            }
+            catch (Exception e)
+            {
+                this.m_haserror = true;
+                throw new System.Exception(e.Message, e.InnerException);
+            }
+        }
+        #endregion ExecuteReader
 
         #region ExecuteScalar
         public object ExecuteScalar(string commandText)
@@ -244,13 +374,15 @@ namespace UploaderFileMonitor.DAL
         {
             try
             {
-                this.InitSqliteDB();
-
-                return SqlHelperSqlite.ExecuteScalar(this.sqliteConn, commandType, commandText);
+                this.InitConnection();
+                if (this.m_NeedTran)
+                    return SqlHelper.ExecuteScalar(this.m_transaction, commandType, commandText);
+                else
+                    return SqlHelper.ExecuteScalar(this.m_conn, commandType, commandText);
             }
             catch (Exception e)
             {
-                //this.m_haserror = true;
+                this.m_haserror = true;
                 throw new System.Exception(e.Message, e.InnerException);
             }
         }
@@ -259,11 +391,15 @@ namespace UploaderFileMonitor.DAL
         {
             try
             {
-                return SqlHelperSqlite.ExecuteScalar(this.sqliteConn, commandType, commandText, commandParameters);
+                this.InitConnection();
+                if (this.m_NeedTran)
+                    return SqlHelper.ExecuteScalar(this.m_transaction, commandType, commandText, commandParameters);
+                else
+                    return SqlHelper.ExecuteScalar(this.m_conn, commandType, commandText, commandParameters);
             }
             catch (Exception e)
             {
-                //this.m_haserror = true;
+                this.m_haserror = true;
                 throw new System.Exception(e.Message, e.InnerException);
             }
         }
@@ -272,249 +408,74 @@ namespace UploaderFileMonitor.DAL
         {
             try
             {
-                this.InitSqliteDB();
-                return SqlHelperSqlite.ExecuteScalar(this.sqliteConn, CommandType.StoredProcedure, spName, parameterValues);
+                this.InitConnection();
+                //return Data.SqlHelperDB.ExecuteScalar(this.m_transaction,spName,parameterValues);
+                if (this.m_NeedTran)
+                    return SqlHelper.ExecuteScalar(this.m_transaction, CommandType.StoredProcedure, spName, parameterValues);
+                else
+                    return SqlHelper.ExecuteScalar(this.m_conn, CommandType.StoredProcedure, spName, parameterValues);
             }
             catch (Exception e)
             {
-                //this.m_haserror = true;
+                this.m_haserror = true;
                 throw new System.Exception(e.Message, e.InnerException);
             }
         }
         #endregion ExecuteScalar	
 
-        #region ExecuteReader
-        public SQLiteDataReader ExecuteReader(string commandText)
-        {
-            return this.ExecuteReader(CommandType.Text, commandText);
-        }
-
-        public SQLiteDataReader ExecuteReader(CommandType commandType, string commandText)
-        {
-            try
-            {
-                this.InitSqliteDB();
-               
-                    return SqlHelperSqlite.ExecuteReader(this.sqliteConn, commandType, commandText);
-            }
-            catch (Exception e)
-            {
-              //  this.m_haserror = true;
-                throw new System.Exception(e.Message, e.InnerException);
-            }
-        }
-
-        public SQLiteDataReader ExecuteReader(CommandType commandType, string commandText, params IDbDataParameter[] commandParameters)
-        {
-            try
-            {
-                this.InitSqliteDB();
-               
-                    return SqlHelperSqlite.ExecuteReader(this.sqliteConn, commandType, commandText, commandParameters);
-            }
-            catch (Exception e)
-            {
-              //  this.m_haserror = true;
-                throw new System.Exception(e.Message, e.InnerException);
-            }
-        }
-
-        public SQLiteDataReader ExecuteReader(string spName, params IDbDataParameter[] parameterValues)
-        {
-            try
-            {
-                this.InitSqliteDB();
-                //return Data.SqlHelperDB.ExecuteReader(this.m_transaction,spName,parameterValues);
-
-                return SqlHelperSqlite.ExecuteReader(this.sqliteConn, CommandType.StoredProcedure, spName, parameterValues);
-            }
-            catch (Exception e)
-            {
-                //  this.m_haserror = true;
-                throw new System.Exception(e.Message, e.InnerException);
-            }
-        }
-        #endregion ExecuteReader
-
-        #region ExcuteMapping
-
-        /// <summary>  
-        /// 判断SqlDataReader是否存在某列  
-        /// </summary>  
-        /// <param name="dr">SqlDataReader</param>  
-        /// <param name="columnName">列名</param>  
-        /// <returns></returns>  
-        private bool readerExists(SQLiteDataReader dr, string columnName)
-        {
-
-            dr.GetSchemaTable().DefaultView.RowFilter = "ColumnName= '" + columnName + "'";
-
-            return (dr.GetSchemaTable().DefaultView.Count > 0);
-
-        }
-
-        ///<summary>  
-        ///利用反射和泛型将SqlDataReader转换成List模型  
-        ///</summary>  
-        ///<param name="sql">查询sql语句</param>  
-        ///<returns></returns>  
-        public List<T> ExecuteToList<T>(string sql) where T : new()
-
-        {
-            List<T> list;
-
-            Type type = typeof(T);
-            string tempName = string.Empty;
-
-            using (SQLiteDataReader reader = ExecuteReader(sql))
-            {
-                if (reader.HasRows)
-                {
-                    list = new List<T>();
-                    while (reader.Read())
-                    {
-                        T t = new T();
-                        PropertyInfo[] propertys = t.GetType().GetProperties();
-
-                        foreach (PropertyInfo pi in propertys)
-                        {
-                            tempName = pi.Name;
-                            if (readerExists(reader, tempName))
-                            {
-                                if (!pi.CanWrite)
-                                {
-                                    continue;
-                                }
-                                var value = reader[tempName];
-
-                                if (value != DBNull.Value)
-                                {
 
 
-                                    //if (!pi.PropertyType.IsGenericType)
-                                    //{
-                                    //    //非泛型
-                                    //    pi.SetValue(t, string.IsNullOrEmpty(value) ? null : Convert.ChangeType(value, property.PropertyType), null);
-                                    //}
-                                    //else
-                                    //{
-                                    //    //泛型Nullable<>
-                                    //    Type genericTypeDefinition = pi.PropertyType.GetGenericTypeDefinition();
-                                    //    if (genericTypeDefinition == typeof(Nullable<>))
-                                    //    {
-                                    //        pi.SetValue(t, string.IsNullOrEmpty(value) ? null : Convert.ChangeType(value, Nullable.GetUnderlyingType(property.PropertyType)), null);
-                                    //    }
-                                    //}
 
-                                    if (pi.PropertyType.IsEnum)
-                                    {
-                                        object enumName = Enum.ToObject(pi.PropertyType, value);
-                                        pi.SetValue(t, enumName, null);
-                                    }
-                                    else
-                                        pi.SetValue(t, Convert.ChangeType(value, pi.PropertyType), null);//类型转换。
-
-
-                                    // pi.SetValue(t, value, null);
-                                }
-                            }
-                        }
-                        list.Add(t);
-                    }
-                    return list;
-                }
-            }
-            return null;
-        }
         #endregion
 
 
-
-        public string AttchDatabase(MySqlite attrDB, string newDB)
+        private OleDbCommand GetOraComm(string procname, string[] prams, string[] values)
         {
-            if (attrDB == null)
-                return "";
+            OleDbCommand comm = new OleDbCommand(procname, m_conn);
+            comm.CommandType = CommandType.StoredProcedure;
 
-            string strRet = "ATTACH DATABASE '@dbfile' AS @newdb";
-
-            strRet = strRet.Replace("@dbfile", attrDB.sqliteConnectionString);
-            strRet = strRet.Replace("@newdb", newDB);
-            try
+            for (int i = 0; i < prams.Length; i++)
             {
-                this.ExecuteNonQuery(strRet);
+                comm.Parameters.Add(prams[i], values[i]);
             }
-            catch(Exception ex)
-            {
-                return "";
-            }
-            return newDB;
-        }
-        public void DetchDatabase( string AliasName)
-        {             
-            string strRet = "DETACH DATABASE '" +AliasName +"'";
-
-            try
-            {
-                this.ExecuteNonQuery(strRet);
-            }
-            catch (Exception ex)
-            {
-                 
-            }
+            comm.Parameters.Add(new OleDbParameter("RururnValue", OleDbType.VarChar, 50, ParameterDirection.Output, false, 0, 0, string.Empty, DataRowVersion.Default, null));
+            return comm;
         }
 
-        #region IDisposable Support
-        private bool disposedValue = false; // 要检测冗余调用
-
-        protected virtual void Dispose(bool disposing)
+        public string Proc(string procName, string[] prams, string[] values)
         {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    // TODO: 释放托管状态(托管对象)。
-                    
-                }
+            //用途：    （1）执行代输入、输出参数的存储过程，以完成插入、修改、删除操作,并返回需要的结果字符串；
+            //          （2）执行代输入、输出参数的存储过程，以获得需要的结果字符串；
 
-                // TODO: 释放未托管的资源(未托管的对象)并在以下内容中替代终结器。
-                // TODO: 将大型字段设置为 null。
-
-                disposedValue = true;
-            }
+            //制作人：  柏亮
+            this.InitConnection();
+            OleDbCommand comm = GetOraComm(procName, prams, values);
+            //m_conn.Open();
+            comm.ExecuteNonQuery();
+            m_conn.Close();
+            string AA = comm.Parameters["RururnValue"].Value.ToString();
+            return AA;
         }
-
-        // TODO: 仅当以上 Dispose(bool disposing) 拥有用于释放未托管资源的代码时才替代终结器。
-        // ~MySqlite() {
-        //   // 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
-        //   Dispose(false);
-        // }
-
-        // 添加此代码以正确实现可处置模式。
-        public void Dispose()
-        {
-            // 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
-            Dispose(true);
-            // TODO: 如果在以上内容中替代了终结器，则取消注释以下行。
-            // GC.SuppressFinalize(this);
-        }
-        #endregion
-
-
 
 
 
     }
+
+
     /// <summary>
     /// SQLHelper 的摘要说明。
     /// </summary>
-    public sealed class SqlHelperSqlite
+    public sealed class SqlHelper 
     {
         #region private utility methods & constructors
 
         //Since this class provides only static methods, make the default constructor private to prevent 
         //instances from being created with "new SqlHelper()".
-        private SqlHelperSqlite() { }
-        
+        private SqlHelper () { }
+
+
+
+
 
         /// <summary>
         /// This method is used to attach array of IDbDataParameter s to a IDbCommand.
@@ -652,7 +613,7 @@ namespace UploaderFileMonitor.DAL
         {
             //create a command and prepare it for execution
 
-            IDbCommand cmd = new SQLiteCommand();
+            IDbCommand cmd = new System.Data.OleDb.OleDbCommand();
 
             PrepareCommand(cmd, connection, (IDbTransaction)null, commandType, commandText, commandParameters);
 
@@ -702,7 +663,7 @@ namespace UploaderFileMonitor.DAL
         {
             //create a command and prepare it for execution
 
-            IDbCommand cmd = new SQLiteCommand();
+            IDbCommand cmd = new System.Data.OleDb.OleDbCommand();
             PrepareCommand(cmd, transaction.Connection, transaction, commandType, commandText, commandParameters);
 
             //finally, execute the command.
@@ -755,21 +716,20 @@ namespace UploaderFileMonitor.DAL
         {
             //create a command and prepare it for execution
 
-            DataSet ds;
-            using (SQLiteCommand cmd = new SQLiteCommand())
-            {
-                PrepareCommand(cmd, connection, (IDbTransaction)null, commandType, commandText, commandParameters);
 
-                //create the DataAdapter & DataSet
-                SQLiteDataAdapter da = new SQLiteDataAdapter(cmd);
-                  ds = new DataSet();
+            System.Data.OleDb.OleDbCommand cmd = new System.Data.OleDb.OleDbCommand();
+            PrepareCommand(cmd, connection, (IDbTransaction)null, commandType, commandText, commandParameters);
 
-                //fill the DataSet using default values for DataTable names, etc.
-                da.Fill(ds);
+            //create the DataAdapter & DataSet
+            System.Data.OleDb.OleDbDataAdapter da = new System.Data.OleDb.OleDbDataAdapter(cmd);
+            DataSet ds = new DataSet();
 
-                // detach the IDbDataParameter s from the command object, so they can be used again.			
-                cmd.Parameters.Clear();
-            }
+            //fill the DataSet using default values for DataTable names, etc.
+            da.Fill(ds);
+
+            // detach the IDbDataParameter s from the command object, so they can be used again.			
+            cmd.Parameters.Clear();
+
             //return the dataset
             return ds;
         }
@@ -780,11 +740,11 @@ namespace UploaderFileMonitor.DAL
             //create a command and prepare it for execution
 
 
-            SQLiteCommand cmd = new SQLiteCommand();
+            System.Data.OleDb.OleDbCommand cmd = new System.Data.OleDb.OleDbCommand();
             PrepareCommand(cmd, connection, (IDbTransaction)null, commandType, commandText, commandParameters);
 
             //create the DataAdapter & DataSet
-            SQLiteDataAdapter da = new SQLiteDataAdapter(cmd);
+            System.Data.OleDb.OleDbDataAdapter da = new System.Data.OleDb.OleDbDataAdapter(cmd);
             DataSet ds = new DataSet();
 
             //fill the DataSet using default values for DataTable names, etc.
@@ -831,11 +791,11 @@ namespace UploaderFileMonitor.DAL
         public static DataSet ExecuteDataset(IDbTransaction transaction, CommandType commandType, string commandText, params IDbDataParameter[] commandParameters)
         {
             //create a command and prepare it for execution
-            SQLiteCommand cmd = new SQLiteCommand();
+            System.Data.OleDb.OleDbCommand cmd = new System.Data.OleDb.OleDbCommand();
             PrepareCommand(cmd, transaction.Connection, transaction, commandType, commandText, commandParameters);
 
             //create the DataAdapter & DataSet
-            SQLiteDataAdapter da = new SQLiteDataAdapter(cmd);
+            System.Data.OleDb.OleDbDataAdapter da = new System.Data.OleDb.OleDbDataAdapter(cmd);
             DataSet ds = new DataSet();
 
             //fill the DataSet using default values for DataTable names, etc.
@@ -879,29 +839,29 @@ namespace UploaderFileMonitor.DAL
         /// <param name="commandText">the stored procedure name or T-SQL command</param>
         /// <param name="commandParameters">an array of IDbDataParameter s to be associated with the command or 'null' if no parameters are required</param>
         /// <param name="connectionOwnership">indicates whether the connection parameter was provided by the caller, or created by SqlHelper</param>
-        /// <returns>DataReader containing the results of the command</returns>
-        private static SQLiteDataReader ExecuteReader(IDbConnection connection, IDbTransaction transaction, CommandType commandType, string commandText, IDbDataParameter[] commandParameters, ConnectionOwnership connectionOwnership)
+        /// <returns>System.Data.OleDb.OleDbDataReader containing the results of the command</returns>
+        private static System.Data.OleDb.OleDbDataReader ExecuteReader(IDbConnection connection, IDbTransaction transaction, CommandType commandType, string commandText, IDbDataParameter[] commandParameters, ConnectionOwnership connectionOwnership)
         {
-            //create a reader
-            SQLiteDataReader dr;
-
             //create a command and prepare it for execution
-            using (SQLiteCommand cmd = new SQLiteCommand())
-            {
-                PrepareCommand(cmd, connection, transaction, commandType, commandText, commandParameters);
-                // call ExecuteReader with the appropriate CommandBehavior
-                if (connectionOwnership == ConnectionOwnership.External)
-                {
-                    dr = cmd.ExecuteReader();
-                }
-                else
-                {
-                    dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                }
+            System.Data.OleDb.OleDbCommand cmd = new System.Data.OleDb.OleDbCommand();
+            PrepareCommand(cmd, connection, transaction, commandType, commandText, commandParameters);
 
-                // detach the IDbDataParameter s from the command object, so they can be used again.
-                cmd.Parameters.Clear();
+            //create a reader
+            System.Data.OleDb.OleDbDataReader dr;
+
+            // call ExecuteReader with the appropriate CommandBehavior
+            if (connectionOwnership == ConnectionOwnership.External)
+            {
+                dr = cmd.ExecuteReader();
             }
+            else
+            {
+                dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            }
+
+            // detach the IDbDataParameter s from the command object, so they can be used again.
+            cmd.Parameters.Clear();
+
             return dr;
         }
 
@@ -911,13 +871,13 @@ namespace UploaderFileMonitor.DAL
         /// </summary>
         /// <remarks>
         /// e.g.:  
-        ///  SQLiteDataReader dr = ExecuteReader(conn, CommandType.StoredProcedure, "GetOrders");
+        ///  System.Data.OleDb.OleDbDataReader dr = ExecuteReader(conn, CommandType.StoredProcedure, "GetOrders");
         /// </remarks>
         /// <param name="connection">a valid IDbConnection </param>
         /// <param name="commandType">the CommandType (stored procedure, text, etc.)</param>
         /// <param name="commandText">the stored procedure name or T-SQL command</param>
-        /// <returns>a SQLiteDataReader containing the resultset generated by the command</returns>
-        public static SQLiteDataReader ExecuteReader(IDbConnection connection, CommandType commandType, string commandText)
+        /// <returns>a System.Data.OleDb.OleDbDataReader containing the resultset generated by the command</returns>
+        public static System.Data.OleDb.OleDbDataReader ExecuteReader(IDbConnection connection, CommandType commandType, string commandText)
         {
             //pass through the call providing null for the set of IDbDataParameter s
             return ExecuteReader(connection, commandType, commandText, (IDbDataParameter[])null);
@@ -929,14 +889,14 @@ namespace UploaderFileMonitor.DAL
         /// </summary>
         /// <remarks>
         /// e.g.:  
-        ///  SQLiteDataReader dr = ExecuteReader(conn, CommandType.StoredProcedure, "GetOrders", new IDbDataParameter ("@prodid", 24));
+        ///  System.Data.OleDb.OleDbDataReader dr = ExecuteReader(conn, CommandType.StoredProcedure, "GetOrders", new IDbDataParameter ("@prodid", 24));
         /// </remarks>
         /// <param name="connection">a valid IDbConnection </param>
         /// <param name="commandType">the CommandType (stored procedure, text, etc.)</param>
         /// <param name="commandText">the stored procedure name or T-SQL command</param>
         /// <param name="commandParameters">an array of SqlParamters used to execute the command</param>
-        /// <returns>a SQLiteDataReader containing the resultset generated by the command</returns>
-        public static SQLiteDataReader ExecuteReader(IDbConnection connection, CommandType commandType, string commandText, params IDbDataParameter[] commandParameters)
+        /// <returns>a System.Data.OleDb.OleDbDataReader containing the resultset generated by the command</returns>
+        public static System.Data.OleDb.OleDbDataReader ExecuteReader(IDbConnection connection, CommandType commandType, string commandText, params IDbDataParameter[] commandParameters)
         {
             //pass through the call to the private overload using a null transaction value and an externally owned connection
             return ExecuteReader(connection, (IDbTransaction)null, commandType, commandText, commandParameters, ConnectionOwnership.External);
@@ -949,13 +909,13 @@ namespace UploaderFileMonitor.DAL
         /// </summary>
         /// <remarks>
         /// e.g.:  
-        ///  SQLiteDataReader dr = ExecuteReader(trans, CommandType.StoredProcedure, "GetOrders");
+        ///  System.Data.OleDb.OleDbDataReader dr = ExecuteReader(trans, CommandType.StoredProcedure, "GetOrders");
         /// </remarks>
         /// <param name="transaction">a valid IDbTransaction </param>
         /// <param name="commandType">the CommandType (stored procedure, text, etc.)</param>
         /// <param name="commandText">the stored procedure name or T-SQL command</param>
-        /// <returns>a SQLiteDataReader containing the resultset generated by the command</returns>
-        public static SQLiteDataReader ExecuteReader(IDbTransaction transaction, CommandType commandType, string commandText)
+        /// <returns>a System.Data.OleDb.OleDbDataReader containing the resultset generated by the command</returns>
+        public static System.Data.OleDb.OleDbDataReader ExecuteReader(IDbTransaction transaction, CommandType commandType, string commandText)
         {
             //pass through the call providing null for the set of IDbDataParameter s
             return ExecuteReader(transaction, commandType, commandText, (IDbDataParameter[])null);
@@ -967,14 +927,14 @@ namespace UploaderFileMonitor.DAL
         /// </summary>
         /// <remarks>
         /// e.g.:  
-        ///   SQLiteDataReader dr = ExecuteReader(trans, CommandType.StoredProcedure, "GetOrders", new IDbDataParameter ("@prodid", 24));
+        ///   System.Data.OleDb.OleDbDataReader dr = ExecuteReader(trans, CommandType.StoredProcedure, "GetOrders", new IDbDataParameter ("@prodid", 24));
         /// </remarks>
         /// <param name="transaction">a valid IDbTransaction </param>
         /// <param name="commandType">the CommandType (stored procedure, text, etc.)</param>
         /// <param name="commandText">the stored procedure name or T-SQL command</param>
         /// <param name="commandParameters">an array of SqlParamters used to execute the command</param>
-        /// <returns>a SQLiteDataReader containing the resultset generated by the command</returns>
-        public static SQLiteDataReader ExecuteReader(IDbTransaction transaction, CommandType commandType, string commandText, params IDbDataParameter[] commandParameters)
+        /// <returns>a System.Data.OleDb.OleDbDataReader containing the resultset generated by the command</returns>
+        public static System.Data.OleDb.OleDbDataReader ExecuteReader(IDbTransaction transaction, CommandType commandType, string commandText, params IDbDataParameter[] commandParameters)
         {
             //pass through to private overload, indicating that the connection is owned by the caller
             return ExecuteReader(transaction.Connection, transaction, commandType, commandText, commandParameters, ConnectionOwnership.External);
@@ -1020,18 +980,15 @@ namespace UploaderFileMonitor.DAL
         /// <returns>an object containing the value in the 1x1 resultset generated by the command</returns>
         public static object ExecuteScalar(IDbConnection connection, CommandType commandType, string commandText, params IDbDataParameter[] commandParameters)
         {
-            object retval;
             //create a command and prepare it for execution
-            using (SQLiteCommand cmd = new SQLiteCommand())
-            {
-                PrepareCommand(cmd, connection, (IDbTransaction)null, commandType, commandText, commandParameters);
+            System.Data.OleDb.OleDbCommand cmd = new System.Data.OleDb.OleDbCommand();
+            PrepareCommand(cmd, connection, (IDbTransaction)null, commandType, commandText, commandParameters);
 
-                //execute the command & return the results
-                  retval = cmd.ExecuteScalar();
+            //execute the command & return the results
+            object retval = cmd.ExecuteScalar();
 
-                // detach the IDbDataParameter s from the command object, so they can be used again.
-                cmd.Parameters.Clear();
-            }
+            // detach the IDbDataParameter s from the command object, so they can be used again.
+            cmd.Parameters.Clear();
             return retval;
 
         }
@@ -1071,7 +1028,7 @@ namespace UploaderFileMonitor.DAL
         public static object ExecuteScalar(IDbTransaction transaction, CommandType commandType, string commandText, params IDbDataParameter[] commandParameters)
         {
             //create a command and prepare it for execution
-            SQLiteCommand cmd = new SQLiteCommand();
+            System.Data.OleDb.OleDbCommand cmd = new System.Data.OleDb.OleDbCommand();
             PrepareCommand(cmd, transaction.Connection, transaction, commandType, commandText, commandParameters);
 
             //execute the command & return the results
@@ -1081,6 +1038,9 @@ namespace UploaderFileMonitor.DAL
             cmd.Parameters.Clear();
             return retval;
         }
+
+
+
         #endregion ExecuteScalar	
 
     }

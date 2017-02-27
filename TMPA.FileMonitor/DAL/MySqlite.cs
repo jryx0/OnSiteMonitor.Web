@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace UploaderFileMonitor.DAL
+namespace TMPA.FileMonitor.DAL
 {
     public class MySqlite : IDisposable
     {
